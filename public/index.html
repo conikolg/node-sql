@@ -1,109 +1,128 @@
-
 <!doctype html>
 <html>
- <head>
-	<meta charset="UTF-8">
-	<title>ANGULARJS App</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/bootstrap-theme.css">
-	<style>
-	span {margin:5px;}
-	</style>
- </head>
- <body ng-app="cartApp">
 
- <div class="container">
-   <div class="page-header">
-    <h2>Angular With Node Demo</h2>
-   </div>
- </div>
+<head>
+  <meta charset="UTF-8">
+  <title>Netnology Covid-19 User Registration Portal</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-theme.css">
+  <style>
+    span {
+      margin: 5px;
+    }
+  </style>
+</head>
 
-	<div ng-controller="mainController">
+<body ng-app="cartApp">
 
-			<div class="container well mtp75">
-          <span ng-click="emptyInput()" data-toggle="modal" data-target="#userModal" class="btn btn-success pull-right">Add New User</span>
-				<div class="row"></div>
-				<br>
+  <div class="container">
+    <div class="page-header">
+      <p style="float: left;">
+        <img src="caduceus.png" width="65px" height="65px" />
+      </p>
+      <h2>Netnology Covid-19 User Registration Portal</h2>
+      <p>Disclaimer: For development only. No real user data is saved here.</p>
+    </div>
+  </div>
 
-				<table cellpadding=10 cellspacing=10 border=0 class="table">
-					<tr>
-						<th>No.</th>
-						<th>Name</th>
-						<th>Age</th>
-            <th>City</th>
-						<th>UPDATE</th>
-						<th>DELETE</th>
-					</tr>
+  <div ng-controller="mainController">
 
-					<tr ng-repeat="user in users">
-						<td>{{$index+1}}</td>
-						<td>{{user.Name}}</a></td>
-						<td>{{user.Age}}</td>
-            <td>{{user.City}}</td>
-						<td><div ng-click="enableUpdateForm(user)" data-toggle="modal" data-target="#userModal" class="btn btn-primary btn-sm glyphicon glyphicon-pencil"></div></td>
-						<td><div ng-click="deleteUser(user.ID)" class="btn btn-danger btn-sm glyphicon glyphicon-remove"></div></td>
-					</tr>
-				</table>
+    <div class="container well mtp75">
+      <span ng-click="emptyInput()" data-toggle="modal" data-target="#userModal" class="btn btn-success pull-right">Add
+        New User</span>
+      <div class="row"></div>
+      <br>
 
-				</div> <!-- End OF Row -->
+      <table cellpadding=10 cellspacing=10 border=0 class="table">
+        <tr>
+          <th>No.</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>City</th>
+          <th>UPDATE</th>
+          <th>DELETE</th>
+        </tr>
 
-      <div class="container">
-         <!-- Modal -->
-         <div class="modal fade" id="userModal" role="dialog">
-           <div class="modal-dialog">
+        <tr ng-repeat="user in users">
+          <td>{{$index+1}}</td>
+          <td>{{user.Name}}</a></td>
+          <td>{{user.Age}}</td>
+          <td>{{user.City}}</td>
+          <td>
+            <div ng-click="enableUpdateForm(user)" data-toggle="modal" data-target="#userModal"
+              class="btn btn-primary btn-sm glyphicon glyphicon-pencil"></div>
+          </td>
+          <td>
+            <div ng-click="deleteUser(user.ID)" class="btn btn-danger btn-sm glyphicon glyphicon-remove"></div>
+          </td>
+        </tr>
+      </table>
 
-             <!-- Modal content-->
-             <div class="modal-content">
-               <div class="modal-header">
-                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                 <h4 ng-show="enableEditForm" class="modal-title">Edit User</h4>
-                 <h4 ng-show="!enableEditForm" class="modal-title">Add User</h4>
-               </div>
-               <!-- Modal Body -->
-           <div class="modal-body">
-               <form name="userForm" class="form-horizontal" role="form">
-                 <div class="form-group" ng-class="{ 'has-error' : userForm.user_name.$invalid && !userForm.user_name.$pristine }">
-                   <label  class="col-sm-2 control-label"
-                             for="name">Name*</label>
-                   <div class="col-sm-10">
-                       <input type="text" class="form-control" required
-                        name="user_name" ng-model="user.name" id="user_name" placeholder="Name"/>
-                       <p ng-show="userForm.user_name.$invalid && !userForm.user_name.$pristine" class="help-block">Required Field</p>
-                   </div>
-                 </div>
-                 <div class="form-group" ng-class="{ 'has-error' : userForm.user_age.$error.pattern,   'has-error' : userForm.user_age.$invalid && !userForm.user_age.$pristine}">
-                   <label class="col-sm-2 control-label"
-                         for="age" >Age*</label>
-                   <div class="col-sm-10">
-                       <input type="text" class="form-control" ng-pattern="/^[1-9]?[0-9]{1}$|^100$/" required
-                           id="age" name="user_age" ng-model="user.age" placeholder="Age"/>
-                       <p ng-show="userForm.user_age.$error.pattern" class="help-block">Invalid Age</p>
-                       <p ng-show="userForm.user_age.$invalid && !userForm.user_age.$pristine" class="help-block">Required Field</p>
-                   </div>
-                 </div>
-                 <div class="form-group"  ng-class="{ 'has-error' : userForm.user_city.$invalid && !userForm.user_city.$pristine }">
-                   <label class="col-sm-2 control-label"
-                         for="city">City*</label>
-                   <div class="col-sm-10">
-                       <input type="text" class="form-control" name="user_city" required
-                           id="city" ng-model="user.city" placeholder="City"/>
-                       <p ng-show="userForm.user_city.$invalid && !userForm.user_city.$pristine" class="help-block">Required Field</p>
-                   </div>
-                 </div>
-               </form>
-               <div class="modal-footer">
-                 <button type="button" ng-show="enableEditForm" ng-disabled="userForm.$invalid" class="btn btn-success" value="Cancel" ng-click="updateUser(user)" data-dismiss="modal"/>Save</button>
-                 <button type="button" ng-show="!enableEditForm" ng-disabled="userForm.$invalid" class="btn btn-success" value="Cancel" ng-click="createUser(user)" data-dismiss="modal"/>Add</button>
-                 <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelUpdate()">Close</button>
-               </div>
-             </div>
+    </div> <!-- End OF Row -->
 
-           </div>
-         </div>
+    <div class="container">
+      <!-- Modal -->
+      <div class="modal fade" id="userModal" role="dialog">
+        <div class="modal-dialog">
 
-       </div>
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 ng-show="enableEditForm" class="modal-title">Edit User</h4>
+              <h4 ng-show="!enableEditForm" class="modal-title">Add User</h4>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+              <form name="userForm" class="form-horizontal" role="form">
+                <div class="form-group"
+                  ng-class="{ 'has-error' : userForm.user_name.$invalid && !userForm.user_name.$pristine }">
+                  <label class="col-sm-2 control-label" for="name">Name*</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" required name="user_name" ng-model="user.name"
+                      id="user_name" placeholder="Name" />
+                    <p ng-show="userForm.user_name.$invalid && !userForm.user_name.$pristine" class="help-block">
+                      Required Field</p>
+                  </div>
+                </div>
+                <div class="form-group"
+                  ng-class="{ 'has-error' : userForm.user_age.$error.pattern,   'has-error' : userForm.user_age.$invalid && !userForm.user_age.$pristine}">
+                  <label class="col-sm-2 control-label" for="age">Age*</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" ng-pattern="/^[1-9]?[0-9]{1}$|^100$/" required id="age"
+                      name="user_age" ng-model="user.age" placeholder="Age" />
+                    <p ng-show="userForm.user_age.$error.pattern" class="help-block">Invalid Age</p>
+                    <p ng-show="userForm.user_age.$invalid && !userForm.user_age.$pristine" class="help-block">Required
+                      Field</p>
+                  </div>
+                </div>
+                <div class="form-group"
+                  ng-class="{ 'has-error' : userForm.user_city.$invalid && !userForm.user_city.$pristine }">
+                  <label class="col-sm-2 control-label" for="city">City*</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="user_city" required id="city" ng-model="user.city"
+                      placeholder="City" />
+                    <p ng-show="userForm.user_city.$invalid && !userForm.user_city.$pristine" class="help-block">
+                      Required Field</p>
+                  </div>
+                </div>
+              </form>
+              <div class="modal-footer">
+                <button type="button" ng-show="enableEditForm" ng-disabled="userForm.$invalid" class="btn btn-success"
+                  value="Cancel" ng-click="updateUser(user)" data-dismiss="modal" />Save</button>
+                <button type="button" ng-show="!enableEditForm" ng-disabled="userForm.$invalid" class="btn btn-success"
+                  value="Cancel" ng-click="createUser(user)" data-dismiss="modal" />Add</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"
+                  ng-click="cancelUpdate()">Close</button>
+              </div>
+            </div>
 
-		</div> <!-- End Of ng-controller -->
+          </div>
+        </div>
+
+      </div>
+
+    </div> <!-- End Of ng-controller -->
   </div>
 
   <!-- Bootstrap core CSS -->
@@ -112,5 +131,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="core.js"></script><!-- load angular -->
- </body>
+</body>
+
 </html>

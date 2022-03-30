@@ -1,16 +1,25 @@
 //database config.js
-var mysql = require('mysql')
+require('dotenv').config()
+var mysql = require('mysql');
 var app = require('express');
-//You can configure any DB here.
 
-//local database config
+// Logging
+var winston = require('winston');
+const consoleTransport = new winston.transports.Console()
+const myWinstonOptions = {
+    transports: [consoleTransport]
+}
+const logger = new winston.createLogger(myWinstonOptions)
+
+//You can configure any DB here.
 var db_config = {
-   user: 'root',
-   password: 'root',
-   server: 'localhost', // You can use 'localhost\\instance' to connect to named instance
-   database: 'myfirstdatabase',
+   user: 'USERNAME',
+   password: 'PASSWORD',
+   host: 'localhost', // You can use 'localhost\\instance' to connect to named instance
+   database: 'DATABASE_NAME',
    port: 3306
 }
+logger.debug(db_config);
 
 var pool;
 
