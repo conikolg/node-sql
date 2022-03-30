@@ -16,7 +16,7 @@ module.exports = {
   getUsers: function (req, res) {
     pool.getConnection(function (err, connection) {
       if (err) {
-        logger.error('in /getUsers  ' + JSON.stringify(err));
+        logger.error('in /getUsers when making db connection   ' + JSON.stringify(err));
         return;
       }
       connection.query('SELECT * from Users', function (err, rows, fields) {
@@ -36,7 +36,7 @@ module.exports = {
     console.log(query);
     pool.getConnection(function (err, connection) {
       if (err) {
-        logger.error('in /addUser  ' + JSON.stringify(err));
+        logger.error('in /addUser when making db connection   ' + JSON.stringify(err));
         return;
       }
       connection.query(query, function (err, rows, fields) {
@@ -55,7 +55,7 @@ module.exports = {
     var query = 'Update Users SET Name = "' + name + '", Age = ' + age + ' , City = "' + city + '" where ID = ' + req.params.id + '';
     pool.getConnection(function (err, connection) {
       if (err) {
-        logger.error('in /updateUser  ' + JSON.stringify(err));
+        logger.error('in /updateUser when making db connection   ' + JSON.stringify(err));
         return;
       }
       connection.query(query, function (err, rows, fields) {
@@ -71,7 +71,7 @@ module.exports = {
     var query = 'Delete from Users where ID = ' + req.params.id + '';
     pool.getConnection(function (err, connection) {
       if (err) {
-        logger.error('in /deleteUser  ' + JSON.stringify(err));
+        logger.error('in /deleteUser when making db connection   ' + JSON.stringify(err));
         return;
       }
       connection.query(query, function (err, rows, fields) {
