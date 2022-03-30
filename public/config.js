@@ -1,15 +1,18 @@
 //database config.js
-require('dotenv').config()
 var mysql = require('mysql');
 var app = require('express');
 
 // Logging
 var winston = require('winston');
-const consoleTransport = new winston.transports.Console()
-const myWinstonOptions = {
-    transports: [consoleTransport]
-}
-const logger = new winston.createLogger(myWinstonOptions)
+const loggingFormat = winston.format.combine(
+  winston.format.colorize(),
+  winston.format.timestamp(),
+  winston.format.align(),
+  winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+);
+const logger = new winston.createLogger({
+  transports: [new winston.transports.Console({ level: 'debug', format: loggingFormat })]
+});
 
 //You can configure any DB here.
 var db_config = {
@@ -19,7 +22,7 @@ var db_config = {
    database: 'DATABASE_NAME',
    port: 3306
 }
-logger.debug(db_config);
+logger.debug(JSON.stringify(db_config));
 
 var pool;
 
