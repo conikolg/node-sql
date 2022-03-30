@@ -113,7 +113,7 @@ Try this MySQL container as the backend db:
 ``` bash
 docker run \
   --name mysql \
-  -it --rm \
+  -itd --rm \
   -e MYSQL_ROOT_PASSWORD=my-pass \
   -e MYSQL_DATABASE=patients \
   -p 3306:3306 \
