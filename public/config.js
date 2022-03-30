@@ -28,6 +28,28 @@ var pool;
 
 function handleDisconnect() {
     pool = mysql.createPool(db_config);
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            logger.error('on startup when making db connection  ' + JSON.stringify(err));
+            return;
+        }
+        q = `
+            CREATE TABLE IF NOT EXISTS ${process.env.DB_DATABASE}(
+                ID int NOT NULL AUTO_INCREMENT,
+                Name varchar(255),
+                Age int,
+                City varchar(255),
+                PRIMARY KEY (ID)
+            );
+        `
+        connection.query(q, function (err, rows, fields) {
+            connection.release();
+            if (!err)
+              res.json(rows);
+            else
+              console.log('Error while performing Query.', err);
+          });
+    });
     return pool;
 }
 
