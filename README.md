@@ -71,3 +71,39 @@
 ## Live demo on
 
   *<https://node-sql.herokuapp.com/>*
+
+## Containerized Deployment
+
+Run this command to build the container's image:
+
+``` bash
+docker build -t nn-medical-app .
+```
+
+Run this command to run the container:
+
+``` bash
+docker run \
+  --name nn-medical-app \
+  -itd --rm \
+  -e DB_USERNAME=my-user \
+  -e DB_PASSWORD=my-pass \
+  -e DB_HOSTNAME=localhost \
+  -e DB_DATABASE=patients \
+  -e DB_PORT=3306 \
+  -p 8080:8080 \
+  nn-medical-app
+```
+
+Run this command to view the container's logs:
+
+``` bash
+docker logs -f nn-medical-app
+```
+
+Run these commands to stop and delete the container:
+
+``` bash
+docker stop nn-medical-app
+docker rm nn-medical-app
+```
