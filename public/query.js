@@ -19,7 +19,9 @@ module.exports = {
         logger.error('in /getUsers when making db connection   ' + JSON.stringify(err));
         return;
       }
-      connection.query('SELECT * from Users', function (err, rows, fields) {
+      var query = 'SELECT * from Users';
+      connection.query(query, function (err, rows, fields) {
+        logger.info('in /getUsers when making query   ' + query);
         connection.release();
         if (!err)
           res.json(rows);
@@ -33,13 +35,13 @@ module.exports = {
     var age = req.body.age;
     var city = req.body.city;
     var query = 'Insert into Users (Name, Age, City) values ("' + name + '",' + age + ',"' + city + '")';
-    console.log(query);
     pool.getConnection(function (err, connection) {
       if (err) {
         logger.error('in /addUser when making db connection   ' + JSON.stringify(err));
         return;
       }
       connection.query(query, function (err, rows, fields) {
+        logger.info('in /addUser when making query   ' + query);
         connection.release();
         if (!err)
           res.json(rows);
@@ -59,6 +61,7 @@ module.exports = {
         return;
       }
       connection.query(query, function (err, rows, fields) {
+        logger.info('in /updateUser when making query   ' + query);
         connection.release();
         if (!err)
           res.json(rows);
@@ -75,6 +78,7 @@ module.exports = {
         return;
       }
       connection.query(query, function (err, rows, fields) {
+        logger.info('in /deleteUser when making query   ' + query);
         connection.release();
         if (!err)
           res.json(rows);

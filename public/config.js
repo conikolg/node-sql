@@ -1,5 +1,5 @@
 //database config.js
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var app = require('express');
 
 // Logging
@@ -34,7 +34,7 @@ function handleDisconnect() {
             return;
         }
         q = `
-            CREATE TABLE IF NOT EXISTS ${process.env.DB_DATABASE}(
+            CREATE TABLE IF NOT EXISTS Users(
                 ID int NOT NULL AUTO_INCREMENT,
                 Name varchar(255),
                 Age int,
@@ -44,10 +44,8 @@ function handleDisconnect() {
         `
         connection.query(q, function (err, rows, fields) {
             connection.release();
-            if (!err)
-              res.json(rows);
-            else
-              console.log('Error while performing Query.', err);
+            if (err)
+              logger.error('on startup when creating table  ' + JSON.stringify(err));
           });
     });
     return pool;
