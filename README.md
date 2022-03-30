@@ -107,3 +107,15 @@ Run these commands to stop and delete the container:
 docker stop nn-medical-app
 docker rm nn-medical-app
 ```
+
+Try this MySQL container as the backend db:
+
+``` bash
+docker run \
+  --name mysql \
+  -it --rm \
+  -e MYSQL_ROOT_PASSWORD=my-pass \
+  -e MYSQL_DATABASE=patients \
+  -p 3306:3306 \
+  mysql
+```
