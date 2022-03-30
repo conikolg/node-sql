@@ -50,3 +50,4 @@ Temporary Items
 npm-debug.log
 .DS_Store
 /*.env
+package-lock.json
