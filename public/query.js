@@ -1,4 +1,5 @@
 // Logging
+const axios = require('axios');
 var winston = require('winston');
 const loggingFormat = winston.format.combine(
   winston.format.colorize(),
@@ -11,80 +12,57 @@ const logger = new winston.createLogger({
 });
 
 // API
-var pool = require('./config').config
+api_host = "10.2.29.11"
+api_port = "8080"
+api_stub = `http://${api_host}:${api_port}/api/`
+
 module.exports = {
   getUsers: function (req, res) {
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        logger.error('in /getUsers when making db connection   ' + JSON.stringify(err));
-        return;
-      }
-      var query = 'SELECT * from Users';
-      connection.query(query, function (err, rows, fields) {
-        logger.info('in /getUsers when making query   ' + query);
-        connection.release();
-        if (!err)
-          res.json(rows);
-        else
-          console.log('Error while performing Query.', err);
+    axios.get(api_stub + "getUsers")
+      .then(function (response) {
+        logger.debug("/api/getUsers success: " + JSON.stringify(response.data));
+        res.json(response.data);
+      })
+      .catch(function (error) {
+        logger.debug("/api/getUsers failed: " + error);
       });
-    });
   },
   addUser: function (req, res) {
     var name = req.body.name;
     var age = req.body.age;
     var city = req.body.city;
-    var query = 'Insert into Users (Name, Age, City) values ("' + name + '",' + age + ',"' + city + '")';
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        logger.error('in /addUser when making db connection   ' + JSON.stringify(err));
-        return;
-      }
-      connection.query(query, function (err, rows, fields) {
-        logger.info('in /addUser when making query   ' + query);
-        connection.release();
-        if (!err)
-          res.json(rows);
-        else
-          console.log('Error while performing Query.', err);
+    axios.post(api_stub + "addUser", { name, age, city })
+      .then(function (response) {
+        logger.debug("/api/addUser success");
+        res.json(response.data);
+      })
+      .catch(function (error) {
+        logger.debug("/api/addUser failed: " + error);
       });
-    });
   },
   updateUser: function (req, res) {
     var name = req.body.name;
     var age = req.body.age;
     var city = req.body.city;
-    var query = 'Update Users SET Name = "' + name + '", Age = ' + age + ' , City = "' + city + '" where ID = ' + req.params.id + '';
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        logger.error('in /updateUser when making db connection   ' + JSON.stringify(err));
-        return;
-      }
-      connection.query(query, function (err, rows, fields) {
-        logger.info('in /updateUser when making query   ' + query);
-        connection.release();
-        if (!err)
-          res.json(rows);
-        else
-          console.log('Error while performing Query.', err);
+    let id = req.params.id;
+    axios.put(api_stub + "updateUser/" + id, { name, age, city })
+      .then(function (response) {
+        logger.debug("/api/updateUser success");
+        res.json(response.data);
+      })
+      .catch(function (error) {
+        logger.debug("/api/updateUser failed: " + error);
       });
-    });
   },
   deleteUser: function (req, res) {
-    var query = 'Delete from Users where ID = ' + req.params.id + '';
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        logger.error('in /deleteUser when making db connection   ' + JSON.stringify(err));
-        return;
-      }
-      connection.query(query, function (err, rows, fields) {
-        logger.info('in /deleteUser when making query   ' + query);
-        connection.release();
-        if (!err)
-          res.json(rows);
-        else
-          console.log('Error while performing Query.', err);
+    let id = req.params.id;
+    axios.delete(api_stub + "deleteUser/" + id, { id })
+      .then(function (response) {
+        logger.debug("/api/deleteUser success");
+        res.json(response.data);
+      })
+      .catch(function (error) {
+        logger.debug("/api/deleteUser failed: " + error);
       });
-    });
   }
 }
